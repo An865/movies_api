@@ -4,11 +4,124 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/style.css">
     <title>Documentation</title>
 </head>
 <body>
+    <h1>myFlix API</h1>
     <p>This web application provides users with access to information about different movies, directors,
         and genres.  Users can sign up, update their personal information, and create a list of 
         their favorite movies. </p>
+    
+        <table class="movies">
+            <caption>myFlix URL Endpoints</caption>
+            <thead>
+            <tr>
+                <th>Business Logic</th>
+                <th>URL</th>
+                <th>HTTP Method</th>
+                <th>Request Body Data Format</th>
+                <th>Response Body Data Format</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1. Get welcome message</td>
+                <td>/</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>Text of welcome message 'welcome to myFlix'</td>
+            </tr>
+            <tr>
+                <td>2. Get list of ALL movies</td>
+                <td>/movies</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding array of all movies</td>
+            </tr>
+            <tr>
+                <td>3. Get list of ALL users</td>
+                <td>/users</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding array of all movies</td>
+            </tr>
+            <tr>
+                <td>4. Get data about single movie by title</td>
+                <td>/movies/[name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about movie <br>
+                    {<br>
+                        title: 'Psycho', <br>
+                        year: '1960', <br>
+                        director: 'Alfred Hitchcock', <br>
+                        genre: 'Horror' <br>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>5. Get data about a genre by movie name</td>
+                <td>/movies/[name]/genre</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>Text indicating the genre of the movie</td>
+            </tr>
+            <tr>
+                <td>6. Get data about director by name</td>
+                <td>/movies/[name]/director</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>Text indicating the director of the movie</td>
+            </tr>
+            <tr>
+                <td>7. Create new user</td>
+                <td>/users</td>
+                <td>POST</td>
+                <td>A JSON object holding data about user to add
+                    {<br>
+                        name: 'John Doe', <br>
+                        favoriteMovies: [Psycho] <br>
+                    }
+                </td>
+                <td>
+                    A JSON object holding data that was added including id <br>
+                    {<br>
+                        id: 2,<br>
+                        name: 'John Doe', <br>
+                        favoriteMovies: [Psycho] <br>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>8. Update user's favorite movie list</td>
+                <td>/users/[name]/[movies]</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>Text of updated movie list</td>
+            </tr>
+            <tr>
+                <td>9. Update user info</td>
+                <td>/users/update/[oldName][newName]</td>
+                <td>PUT</td>
+                <td>None</td>
+                <td>Text indicating the updated name of user</td>
+            </tr>
+            <tr>
+                <td>Delete movie from user's list of favorites</td>
+                <td>/users/[name]/[movie]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>Text indicating movie was deleted from list of favorites</td>
+            </tr>
+            <tr>
+                <td>Delete user's account</td>
+                <td>/users/[id]</td>
+                <td>DELETE</td>
+                <td>None</td>
+                <td>Text indicating the user's account was deleted</td>
+            </tr>
+            <tbody>
+        </table>
 </body>
 </html>
