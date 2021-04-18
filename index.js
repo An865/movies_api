@@ -60,6 +60,18 @@ app.get('/movies/:name', (req, res) => {
         })
 });
 
+// Get user by name
+app.get('/users/:name', (req, res) => {
+    Users.findOne({Username: req.params.name})
+        .then(user => {
+            res.json(user);
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).send('Error ' + error);
+        })
+});
+
 // Get movie's genre
 app.get('/movies/:name/genre', (req, res) => {
     Movies.findOne({Title: req.params.name})
@@ -158,14 +170,25 @@ app.put('/users/update/:oldName/:newName', (req, res) => {
 /* DELETE requests */
 
 // Delete movie from user's list of favotires
+// app.delete('/users/:name/:MovieID', (req, res) => {
+//     Users.findOne({Username: req.params.name})
+//     .then(user => {
+//         const index = user.FavoriteMovies.indexOf(req.params.MovieID)
+//         if(index > -1){
+//             user.FavoriteMovies.splice(index, 1);
+//         }
+//         res.status(200).send(user);
+//     })
+//     .catch((error) => {
+//         console.error(error);
+//         res.status(500).send('Error: ' + error);
+//     });
+// });
+
 app.delete('/users/:name/:MovieID', (req, res) => {
     Users.findOne({Username: req.params.name})
     .then(user => {
-        console.log(user);
-        const index = user.FavoriteMovies.indexOf(req.params.MovieID)
-        if(index > -1){
-            user.FavoriteMovies.splice(index, 1);
-        }
+        user.FavoriteMovies.pull(req.params.MovieID)
         res.status(200).send(user);
     })
     .catch((error) => {
@@ -174,21 +197,20 @@ app.delete('/users/:name/:MovieID', (req, res) => {
     });
 });
 
-// Delete user's account by name
-app.delete('/users/delete/:name', (req, res) => {
+app.delete('/users/:name', (req, res) => {
     Users.findOneAndRemove({Username: req.params.name})
-    .then(user => {
-        if (!user) {
-            res.status(400).send(req.params.name + ' was not found');
-        } else {
-            res.status(200).send(req.params.name + ' was deleted.');
-        }
-    })
-    .catch(error => {
-        console.error(error);
-        res.status(500).send('Error: ' + error);
-    });
-});
+        .then(user => {
+            if(!user){
+                res.status(400).send(req.params.name + ' was not found');
+            } else {
+                res.status(200).send(req.params.name + ' was deleted');
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            res.status(500).send('Error: ' + error);
+        })
+})
 
 
 app.use(express.static('public'));

@@ -25,6 +25,7 @@
             </tr>
             </thead>
             <tbody>
+
             <tr>
                 <td>1. Get welcome message</td>
                 <td>/</td>
@@ -32,6 +33,7 @@
                 <td>None</td>
                 <td>Text of welcome message 'welcome to myFlix'</td>
             </tr>
+
             <tr>
                 <td>2. Get list of ALL movies</td>
                 <td>/movies</td>
@@ -39,6 +41,7 @@
                 <td>None</td>
                 <td>A JSON object holding array of all movies</td>
             </tr>
+
             <tr>
                 <td>3. Get list of ALL users</td>
                 <td>/users</td>
@@ -46,8 +49,9 @@
                 <td>None</td>
                 <td>A JSON object holding array of all movies</td>
             </tr>
+
             <tr>
-                <td>4. Get data about single movie by title</td>
+                <td>4. Get movie data by title</td>
                 <td>/movies/[name]</td>
                 <td>GET</td>
                 <td>None</td>
@@ -60,62 +64,96 @@
                     }
                 </td>
             </tr>
+
             <tr>
-                <td>5. Get data about a genre by movie name</td>
+                <td>5. Get user data by username</td>
+                <td>/user/[name]</td>
+                <td>GET</td>
+                <td>None</td>
+                <td>A JSON object holding data about user <br>
+                    {<br>
+                        Username: 'user1', <br>
+                        Password: 'password', <br>
+                        Email: 'user1@email.com', <br>
+                        FavoriteMovies: [] <br>
+                    }
+                </td>
+            </tr>
+
+            
+            <tr>
+                <td>6. Get movie's genre by movie name</td>
                 <td>/movies/[name]/genre</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>Text indicating the genre of the movie</td>
             </tr>
+
             <tr>
-                <td>6. Get data about director by name</td>
+                <td>7. Get director data by name</td>
                 <td>/movies/[name]/director</td>
                 <td>GET</td>
                 <td>None</td>
                 <td>Text indicating the director of the movie</td>
             </tr>
+
             <tr>
-                <td>7. Create new user</td>
+                <td>8. Create new user</td>
                 <td>/users</td>
                 <td>POST</td>
                 <td>A JSON object holding data about user to add
                     {<br>
-                        name: 'John Doe', <br>
-                        favoriteMovies: [Psycho] <br>
+                        Username: 'user1', <br>
+                        Password: 'password', <br>
+                        Email: 'user1@email.com', <br>
+                        FavoriteMovies: [] <br>
                     }
                 </td>
                 <td>
                     A JSON object holding data that was added including id <br>
-                    {<br>
-                        id: 2,<br>
-                        name: 'John Doe', <br>
-                        favoriteMovies: [Psycho] <br>
-                    }
+                        {<br>
+                            _id: '1'
+                            Username: 'user1', <br>
+                            Password: 'password', <br>
+                            Email: 'user1@email.com', <br>
+                            FavoriteMovies: [] <br>
+                        }
                 </td>
             </tr>
+
             <tr>
-                <td>8. Update user's favorite movie list</td>
+                <td>9. Add new movie to user's favorites</td>
                 <td>/users/[name]/movies/[moviesid]</td>
                 <td>PUT</td>
                 <td>None</td>
                 <td>Text of updated movie list</td>
             </tr>
+
             <tr>
-                <td>9. Update user info</td>
+                <td>10. Update username</td>
                 <td>/users/update/[oldName][newName]</td>
                 <td>PUT</td>
                 <td>None</td>
                 <td>Text indicating the updated name of user</td>
             </tr>
+
             <tr>
-                <td>10. Delete movie from user's list of favorites</td>
+                <td>11. Delete movie from user's favorites</td>
                 <td>/users/[name]/[movie]</td>
                 <td>DELETE</td>
                 <td>None</td>
-                <td>Text indicating movie was deleted from list of favorites</td>
+                <td>JSON object holding user data that reflects deleted movie <br>
+                    {<br>
+                        Username: 'user1', <br>
+                        Password: 'password', <br>
+                        Email: 'user1@email.com', <br>
+                        FavoriteMovies: [] <br>
+                    }
+                </td>
             </tr>
+
             <tr>
-                <td>11. Delete user's account</td>
+                <td>12. Delete user's account</td>
                 <td>/users/[id]</td>
                 <td>DELETE</td>
                 <td>None</td>
