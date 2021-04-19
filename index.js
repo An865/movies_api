@@ -111,7 +111,8 @@ app.post('/users', (req, res) => {
                     Username: req.body.Username,
                     Password: req.body.Password,
                     Email: req.body.Email,
-                    Birthday: req.body.Birthday
+                    Birthday: req.body.Birthday,
+                    FavoriteMovies: [req.body.FavoriteMovies]
                 })
                 .then(user => {
                     res.status(201).json(user)
@@ -186,7 +187,11 @@ app.put('/users/update/:oldName/:newName', (req, res) => {
 // });
 
 app.delete('/users/:name/:MovieID', (req, res) => {
-    Users.findOne({Username: req.params.name})
+    Users.findOneAndUpdate(
+        {Username: req.params.name},
+        {$pull: {FavoriteMovies: req.params.MovieID}},
+        {new: true}
+    )
     .then(user => {
         user.FavoriteMovies.pull(req.params.MovieID)
         res.status(200).send(user);
@@ -197,6 +202,7 @@ app.delete('/users/:name/:MovieID', (req, res) => {
     });
 });
 
+//Delete user's account
 app.delete('/users/:name', (req, res) => {
     Users.findOneAndRemove({Username: req.params.name})
         .then(user => {
