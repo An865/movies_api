@@ -15,7 +15,10 @@ mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, 
 app.use(bodyParser.json());
 //logging with morgan
 app.use(morgan('common'));
-
+//import auth.js and require passport
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 /* GET requests */
 
@@ -25,7 +28,7 @@ app.get('/', (req, res)=>{
 })
 
 // Get all movies or return error
-app.get('/movies', (req, res) => {
+app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) => {
     Movies.find()
     .then(movies => {
         res.status(201).json(movies);
@@ -95,7 +98,6 @@ app.get('/movies/:name/director', (req, res) => {
         res.status(500).send('Error ' + error);
     })
 })
-
 
 /* POST Requests*/
 
@@ -169,22 +171,6 @@ app.put('/users/update/:oldName/:newName', (req, res) => {
 
 
 /* DELETE requests */
-
-// Delete movie from user's list of favotires
-// app.delete('/users/:name/:MovieID', (req, res) => {
-//     Users.findOne({Username: req.params.name})
-//     .then(user => {
-//         const index = user.FavoriteMovies.indexOf(req.params.MovieID)
-//         if(index > -1){
-//             user.FavoriteMovies.splice(index, 1);
-//         }
-//         res.status(200).send(user);
-//     })
-//     .catch((error) => {
-//         console.error(error);
-//         res.status(500).send('Error: ' + error);
-//     });
-// });
 
 app.delete('/users/:name/:MovieID', (req, res) => {
     Users.findOneAndUpdate(
