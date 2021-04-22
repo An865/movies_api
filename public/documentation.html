@@ -90,7 +90,7 @@
             </tr>
 
             <tr>
-                <td>7. Get director data by name</td>
+                <td>7. Get director data by movie name</td>
                 <td>/movies/[name]/director</td>
                 <td>GET</td>
                 <td>None</td>
@@ -158,6 +158,24 @@
                 <td>DELETE</td>
                 <td>None</td>
                 <td>Text indicating the user's account was deleted</td>
+            </tr>
+
+            <tr>
+                <td>13. Login</td>
+                <td>/login</td>
+                <td>POST</td>
+                <td>None</td>
+                <td>
+                    if successful: JSON object with user data including token<br>
+                    {<br>
+                        Username: 'user1', <br>
+                        Password: 'password', <br>
+                        Email: 'user1@email.com', <br>
+                        FavoriteMovies: [] <br>
+                        token: "JIUzI1NiIsInR5cC"
+                    }
+                    if failed: text with error message
+                </td>
             </tr>
             <tbody>
         </table>
