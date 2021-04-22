@@ -114,7 +114,7 @@ app.post('/users', passport.authenticate('jwt', {session: false}), (req, res) =>
                     Password: req.body.Password,
                     Email: req.body.Email,
                     Birthday: req.body.Birthday,
-                    FavoriteMovies: [req.body.FavoriteMovies]
+                    FavoriteMovies: []
                 })
                 .then(user => {
                     res.status(201).json(user)
