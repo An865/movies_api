@@ -19,6 +19,11 @@ app.use(morgan('common'));
 let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
+//include cors and define allowed sites
+const cors = require('cors');
+app.use(cors()); //currently whitelist all origins
+// include express validator
+const { check, validationResult } = require('express-validator');
 
 /* GET requests */
 
@@ -40,7 +45,7 @@ app.get('/movies', passport.authenticate('jwt', {session: false}), (req, res) =>
 });
 
 // 3. Get all users or return error
-app.get('/users', passport.authenticate('jwt', {session: false}), (req, res)=>{
+app.get('/users', passport.authenticate('jwt', {session: false}), (req, res) => {
     Users.find()
     .then(users => {
         res.status(201).json(users);
@@ -102,8 +107,24 @@ app.get('/movies/:name/director', passport.authenticate('jwt', {session: false})
 /* POST Requests*/
 
 // 8. Create new user unless that user already exists
-app.post('/users', passport.authenticate('jwt', {session: false}), (req, res) => {
-    Users.findOne({Username: req.body.Username})
+app.post('/users', passport.authenticate('jwt', {session: false}), 
+//input validation for request body data
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+],
+(req, res) => {
+
+    // check the validation object for errors
+    let errors = validationResult(req);
+    if (!errors.isEmpty()) {
+    return res.status(422).json({ errors: errors.array() });
+    }
+
+    let hashedPassword = Users.hashPassword(req.body.Password);
+    Users.findOne({Username: req.body.Username}) //search to see user with req username already exists
     .then(user => {
         if(user){
             return res.status(400).send(req.body.Username + 'already exists');
@@ -111,7 +132,7 @@ app.post('/users', passport.authenticate('jwt', {session: false}), (req, res) =>
             Users
                 .create({
                     Username: req.body.Username,
-                    Password: req.body.Password,
+                    Password: hashedPassword, //set password to hashed password
                     Email: req.body.Email,
                     Birthday: req.body.Birthday,
                     FavoriteMovies: []
@@ -122,7 +143,7 @@ app.post('/users', passport.authenticate('jwt', {session: false}), (req, res) =>
                 .catch(error => {
                     console.error(error);
                     res.status(500).send('Error: ' + error);
-                })
+                });
         }     
     })
     .catch(error => {
