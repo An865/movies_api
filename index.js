@@ -10,8 +10,8 @@ const Models = require('./models.js');
 const Movies = Models.Movie;
 const Users = Models.User;
 //allow mongoose to connect to db
-mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
-//mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+//mongoose.connect('mongodb://localhost:27017/myFlixDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 //bodyparser to parse json in req and res
 app.use(bodyParser.json());
 //logging with morgan
