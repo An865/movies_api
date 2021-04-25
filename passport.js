@@ -1,12 +1,16 @@
+/* passport.js file defines the local and jwt strategies used for authentication */
+
+//import modules
 const passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy,
-  Models = require('./models.js'),
-  passportJWT = require('passport-jwt');
+LocalStrategy = require('passport-local').Strategy,
+Models = require('./models.js'),
+passportJWT = require('passport-jwt');
 
 let Users = Models.User,
-  JWTStrategy = passportJWT.Strategy,
-  ExtractJWT = passportJWT.ExtractJwt;
+JWTStrategy = passportJWT.Strategy,
+ExtractJWT = passportJWT.ExtractJwt;
 
+//define new local strategy
 passport.use(new LocalStrategy({
   usernameField: 'Username',
   passwordField: 'Password'
@@ -34,6 +38,7 @@ passport.use(new LocalStrategy({
   });
 }));
 
+//define JWT strategy
 passport.use(new JWTStrategy({
   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
   secretOrKey: 'your_jwt_secret'

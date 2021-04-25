@@ -131,7 +131,7 @@ app.post('/users',
             return res.status(400).send(req.body.Username + 'already exists');
         } else {
             Users
-                .create({
+                .create({ //create instance of model (i.e. document)
                     Username: req.body.Username,
                     Password: hashedPassword, //set password to hashed password
                     Email: req.body.Email,

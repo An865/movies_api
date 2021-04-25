@@ -1,9 +1,12 @@
+/* auth.js file implements login.  Here we generate a token, call the passport authentication
+function with the local strategy, handle errors and login the user */
+
 const jwtSecret = 'your_jwt_secret'; // This has to be the same key used in the JWTStrategy
 
 const jwt = require('jsonwebtoken'),
 passport = require('passport');
 
-require('./passport'); // local passport file
+require('./passport'); // local passport.js file
 
 
 let generateJWTToken = user => {
@@ -16,7 +19,7 @@ let generateJWTToken = user => {
 
 
 /* login (POST) */
-//corresponds to 13 in documentation.html
+//corresponds to route 13 in documentation.html
 module.exports = router => {
   router.post('/login', (req, res) => {
     passport.authenticate('local', { session: false }, (error, user, info) => {
