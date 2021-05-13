@@ -16,13 +16,13 @@ mongoose.connect(process.env.CONNECTION_URI, { useNewUrlParser: true, useUnified
 app.use(bodyParser.json());
 //logging with morgan
 app.use(morgan('common'));
-//import auth.js and passport
-let auth = require('./auth')(app);
 const passport = require('passport');
 require('./passport');
 //include cors and define allowed sites
 const cors = require('cors');
 app.use(cors()); //currently whitelist all origins
+//import auth.js and passport
+let auth = require('./auth')(app);
 // include express validator
 const { check, validationResult } = require('express-validator');
 
