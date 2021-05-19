@@ -173,22 +173,54 @@ app.put('/users/:name/movies/:MovieID', passport.authenticate('jwt', {session: f
 });
 
 // 10. Update user's name
-app.put('/users/update/:oldName/:newName', passport.authenticate('jwt', {session: false}), (req, res) => {
-    Users.findOneAndUpdate({Username: req.params.oldName},
-        { $set:
-            {
-                Username: req.params.newName,
+app.put('/users/update/:oldName/:newName',
+//validate any changed data
+[
+    check('Username', 'Username is required').isLength({min: 5}),
+    check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email does not appear to be valid').isEmail()
+],
+passport.authenticate('jwt', {session: false}), (req, res) => {
+
+ //Check validation object for errors
+ let errors = validationResult(req);
+ if (!errors.isEmpty()) {
+     return res.status(422).json({ errors: errors.array() });
+ }
+
+ 
+ //destructure fields from request body
+ const { Username, Password, Email, Birth } = req.body;
+
+ //if username, password, email, or birthdate are included change those fields in db
+    if(Username || Password || Email || Birth){
+
+        //password needs to be hashed before changed
+        if(Password){
+            req.body.Password = Users.hashPassword(Password)
+        }
+
+        Users.findOneAndUpdate(
+            {Username: req.params.oldName},
+            { $set:
+                {
+                    //spread operator to pass all fields into database
+                    ...req.body 
+                }
+            },
+            {new: true}, //ensures updated document returned
+            (error, updatedUser) => {
+                if(error) {
+                    console.error(error);
+                    res.status(500).send('Error: ' + error);
+                } else {
+                    res.json(updatedUser);
+                }
             }
-        },
-        {new: true}, //ensures updated document returned
-        (error, updatedUser) => {
-            if(error) {
-                console.error(error);
-                res.status(500).send('Error: ' + error);
-            } else {
-                res.json(updatedUser);
-            }
-    });
+         )} else {
+             res.status(200).send('No User Information to Update')
+         }
 });
 
 
