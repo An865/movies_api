@@ -173,7 +173,7 @@ app.put('/users/:name/movies/:MovieID', passport.authenticate('jwt', {session: f
 });
 
 // 10. Update user's name
-app.put('/users/update/:oldName/:newName',
+app.put('/users/:username/',
 //validate any changed data
 [
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
