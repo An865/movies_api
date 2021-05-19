@@ -201,7 +201,7 @@ passport.authenticate('jwt', {session: false}), (req, res) => {
         }
 
         Users.findOneAndUpdate(
-            {Username: req.params.oldName},
+            {Username: req.params.username},
             { $set:
                 {
                     //spread operator to pass all fields into database
