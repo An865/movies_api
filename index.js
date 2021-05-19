@@ -176,7 +176,6 @@ app.put('/users/:name/movies/:MovieID', passport.authenticate('jwt', {session: f
 app.put('/users/update/:oldName/:newName',
 //validate any changed data
 [
-    check('Username', 'Username is required').isLength({min: 5}),
     check('Username', 'Username contains non alphanumeric characters - not allowed.').isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
     check('Email', 'Email does not appear to be valid').isEmail()
