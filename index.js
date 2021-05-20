@@ -135,8 +135,7 @@ app.post('/users',
                     Username: req.body.Username,
                     Password: hashedPassword, //set password to hashed password
                     Email: req.body.Email,
-                    Birth: req.body.Birth,
-                    FavoriteMovies: []
+                    Birth: req.body.Birth
                 })
                 .then(user => {
                     res.status(201).json(user)
